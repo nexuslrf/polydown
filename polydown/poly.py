@@ -53,6 +53,9 @@ class Poly:
         for asset in self.asset_list:
             files_url = "https://api.polyhaven.com/files/" + asset
             file_js = json.loads(self.s.get(files_url).content)
+            if self.model_format not in file_js:
+                print(f'{asset} does not have {self.model_format}, skip')
+                continue
             k_list = [i for i in file_js[self.model_format]]
             k_list.sort(key=lambda fname: int(fname.split("k")[0]))
 
