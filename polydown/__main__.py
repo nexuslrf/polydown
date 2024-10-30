@@ -50,6 +50,14 @@ ap.add_argument(
     help="file format for hdris (hdr, exr).",
 )
 ap.add_argument(
+    "-mf",
+    "--modelformat",
+    action="store",
+    type=str,
+    default="blend",
+    help="file format for models (blend, fbx, obj).",
+)
+ap.add_argument(
     "-o",
     "--overwrite",
     action="store_true",

@@ -19,6 +19,7 @@ class Poly:
         iters,
         tone,
         file_format,
+        model_format='blend',
     ):
         self.s = session
         self.type = type
@@ -34,6 +35,7 @@ class Poly:
         self.iters = iters
         self.tone = tone
         self.file_format = file_format
+        self.model_format = model_format
 
         self.corrupted_files = []
         self.exist_files = 0
@@ -51,7 +53,7 @@ class Poly:
         for asset in self.asset_list:
             files_url = "https://api.polyhaven.com/files/" + asset
             file_js = json.loads(self.s.get(files_url).content)
-            k_list = [i for i in file_js["blend"]]
+            k_list = [i for i in file_js[self.model_format]]
             k_list.sort(key=lambda fname: int(fname.split("k")[0]))
 
             def create_subfolder(k):
@@ -72,11 +74,11 @@ class Poly:
 
             for k in k_list if self.down_sizes == [] else self.down_sizes:
                 if k in k_list:
-                    include = file_js["blend"][k]["blend"]["include"]
+                    include = file_js[self.model_format][k][self.model_format]["include"]
                     # download blend file
                     create_subfolder(k)
-                    bl_url = file_js["blend"][k]["blend"]["url"]
-                    bl_md5 = file_js["blend"][k]["blend"]["md5"]
+                    bl_url = file_js[self.model_format][k][self.model_format]["url"]
+                    bl_md5 = file_js[self.model_format][k][self.model_format]["md5"]
                     filename = bl_url.split("/")[-1]
                     args = (
                         self.type,
